@@ -1,0 +1,31 @@
+﻿[Bb]in/
+[Oo]bj/
+*.dll
+*.exe
+*.pdb
+*.tmp
+.vs/                   # Исключаем папку .vs, кроме launchSettings.json
+!.vs/launchSettings.json
+*.user                 # Настройки пользователя IDE
+*.suo                  # Файлы решений
+.vshost.
+*.csproj.user
+*.vcxproj.user
+.idea/
+packages/
+*.nupkg
+.nuget/
+NuGet.Config
+nuget.exe
+TestResults/
+*.trx
+*.coverage
+*.pfx # Файлы сертификатов
+appsettings.Development.json
+appsettings.Staging.json
+appsettings.Testing.json
+appsettings.Local.json
+*.localsettings
+UserSecretsId
+[Dd]ebug/
+[Rr]elease/

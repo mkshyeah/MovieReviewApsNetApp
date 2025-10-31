@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieRes.Core", "MovieRes.Core\MovieRes.Core.csproj", "{DA0D9CAB-40C4-4E10-9DF2-4CC0A1D26106}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DA0D9CAB-40C4-4E10-9DF2-4CC0A1D26106}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA0D9CAB-40C4-4E10-9DF2-4CC0A1D26106}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA0D9CAB-40C4-4E10-9DF2-4CC0A1D26106}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA0D9CAB-40C4-4E10-9DF2-4CC0A1D26106}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
