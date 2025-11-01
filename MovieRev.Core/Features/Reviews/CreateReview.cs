@@ -30,9 +30,11 @@ public class CreateReview
 
     public sealed class EndPoint : IEndPoint
     {
-        public void MapEndPoint(IEndpointRouteBuilder app)
+        public void MapEndPoints(IEndpointRouteBuilder app)
         {
-            app.MapPost("/reviews", Handler).WithTags("Reviews");
+            app.MapPost("/reviews", Handler)
+                .WithTags("Reviews")
+                .RequireAuthorization();;
         }
     }
 

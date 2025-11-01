@@ -5,7 +5,7 @@ using MovieRev.Core.Data;
 using MovieRev.Core.Extensions; // Используем новое пространство имен для расширений
 using MovieRev.Core.Settings; 
 using MovieRev.Core.Services; 
-using System.Reflection; 
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 

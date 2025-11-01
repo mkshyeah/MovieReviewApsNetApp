@@ -1,16 +1,20 @@
-﻿using MovieRev.Core.Data;
+﻿using System.Security.Claims;
+using MovieRev.Core.Data;
 using MovieRev.Core.Extensions;
-using System.Security.Claims; // Добавляем для ClaimsPrincipal
 
-namespace MovieRev.Core.Features.Reviews.Responses;
+// Добавляем для ClaimsPrincipal
+
+namespace MovieRev.Core.Features.Reviews;
 
 public class DeleteReview
 {
     public sealed class EndPoint : IEndPoint
     {
-        public void MapEndPoint(IEndpointRouteBuilder app)
+        public void MapEndPoints(IEndpointRouteBuilder app) // Changed from MapEndPoint to MapEndPoints
         {
-            app.MapDelete("/reviews/{id}", Handler).WithTags("Reviews");
+            app.MapDelete("/reviews/{id}", Handler)
+                .WithTags("Reviews")
+                .RequireAuthorization();
         }
     }
 

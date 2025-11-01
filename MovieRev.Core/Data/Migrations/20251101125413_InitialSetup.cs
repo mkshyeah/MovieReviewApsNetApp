@@ -4,10 +4,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace MovieRev.Core.Migrations
+namespace MovieRev.Core.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class AddTMDbIdToMovieAgain : Migration
+    public partial class InitialSetup : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

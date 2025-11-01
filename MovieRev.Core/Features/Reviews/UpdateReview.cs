@@ -15,9 +15,11 @@ public class UpdateReview
     
     public sealed class EndPoint : IEndPoint
     {
-        public void MapEndPoint(IEndpointRouteBuilder app)
+        public void MapEndPoints(IEndpointRouteBuilder app)
         {
-            app.MapPut("/reviews/{id}", Handler).WithTags("Reviews");
+            app.MapPut("/reviews/{id}", Handler)
+                .WithTags("Reviews")
+                .RequireAuthorization();
         }
     }
 

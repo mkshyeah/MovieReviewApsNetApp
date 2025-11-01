@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using MovieRev.Core.Models;
 
 namespace MovieRev.Core.Data.Configurations;
 

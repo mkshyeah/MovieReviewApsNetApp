@@ -1,4 +1,6 @@
-﻿namespace MovieRev.Core.Data;
+﻿using MovieRev.Core.Models;
+
+namespace MovieRev.Core.Data;
 
 public class ReviewLike
 {

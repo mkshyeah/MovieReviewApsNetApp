@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using MovieRev.Core.Data;
 
-namespace MovieRev.Core.Data;
+namespace MovieRev.Core.Models;
 
 public sealed class ApplicationUser : IdentityUser
 {

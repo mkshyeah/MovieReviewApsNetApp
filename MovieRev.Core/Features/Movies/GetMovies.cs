@@ -9,9 +9,10 @@ public class GetMovies
 {
     public sealed class EndPoint : IEndPoint
     {
-        public void MapEndPoint(IEndpointRouteBuilder app)
+        public void MapEndPoints(IEndpointRouteBuilder app)
         {
-            app.MapGet("/movies/", Handler).WithName("Movies");
+            app.MapGet("/movies/", Handler)
+                .WithTags("Movies");
         }
     }
 

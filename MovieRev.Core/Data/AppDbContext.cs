@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MovieRev.Core.Features.Reviews;
+using MovieRev.Core.Models;
 
 namespace MovieRev.Core.Data;
 

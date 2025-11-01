@@ -19,9 +19,11 @@ public class UpdateMovie
     
     public sealed class EndPoint : IEndPoint
     {
-        public void MapEndPoint(IEndpointRouteBuilder app)
+        public void MapEndPoints(IEndpointRouteBuilder app)
         {
-            app.MapPut("/movies/{id}", Handler).WithTags("Movies");
+            app.MapPut("/movies/{id}", Handler)
+                .WithTags("Movies")
+                .RequireAuthorization();;
         }
     }
 

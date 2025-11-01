@@ -48,8 +48,6 @@ public static class EndPointExtensions
         {
             app.UseSwagger();           // Создает JSON-файл спецификации
             app.UseSwaggerUI();         // Добавляет пользовательский интерфейс Swagger UI
-            
-            app.MapGet("/", () => Results.Redirect("/swagger"));
         }
         return app;
     }
@@ -62,7 +60,7 @@ public static class EndPointExtensions
 
         foreach (IEndPoint endPoint in endPoints)
         {
-            endPoint.MapEndPoint(builder);
+            endPoint.MapEndPoints(builder);
         }
         
         return app;

@@ -12,10 +12,16 @@ public class TMDbSearchAndImport
 {
     public sealed class EndPoint : IEndPoint
     {
-        public void MapEndPoint(IEndpointRouteBuilder app)
+        public void MapEndPoints(IEndpointRouteBuilder app)
         {
-            app.MapGet("/movies/tmdb/search", SearchMovies).WithTags("Movies").WithName("TMDbSearchMovies");
-            app.MapPost("/movies/tmdb/import/{tmdbMovieId}", ImportMovie).WithTags("Movies").WithName("TMDbImportMovie");
+            app.MapGet("/movies/tmdb/search", SearchMovies)
+                .WithTags("Movies")
+                .WithName("TMDbSearchMovies")
+                .AllowAnonymous();
+            app.MapPost("/movies/tmdb/import/{tmdbMovieId}", ImportMovie)
+                .WithTags("Movies")
+                .WithName("TMDbImportMovie")
+                .RequireAuthorization();
         }
     }
 
@@ -41,7 +47,7 @@ public class TMDbSearchAndImport
             m.Id, // Здесь TMDb Id
             m.Title ?? "Неизвестно",
             (m.ReleaseDate != null && int.TryParse(m.ReleaseDate.Split('-')[0], out var year)) ? year : 0,
-            "https://image.tmdb.org/t/p/w500" + m.PosterPath ?? string.Empty // Формируем полный URL постера
+            BuildImageUrl(m.PosterPath)
         )));
     }
 
@@ -98,9 +104,28 @@ public class TMDbSearchAndImport
                 var existingActor = await context.Actors.FirstOrDefaultAsync(a => a.FullName == tmdbCastMember.Name, cancellationToken);
                 if (existingActor == null)
                 {
-                    existingActor = new Actor { FullName = tmdbCastMember.Name ?? "Unknown", PhotoUrl = "https://image.tmdb.org/t/p/w500" + tmdbCastMember.ProfilePath };
+                    var photoUrl = BuildImageUrl(tmdbCastMember.ProfilePath);
+                    existingActor = new Actor
+                    {
+                        FullName = tmdbCastMember.Name ?? "Unknown",
+                        PhotoUrl = photoUrl
+                    };
                     context.Actors.Add(existingActor);
                 }
+                else
+                {
+                    var updatedPhotoUrl = BuildImageUrl(tmdbCastMember.ProfilePath);
+                    if (!string.IsNullOrWhiteSpace(updatedPhotoUrl))
+                    {
+                        existingActor.PhotoUrl = updatedPhotoUrl;
+                    }
+                    else if (string.IsNullOrWhiteSpace(existingActor.PhotoUrl)
+                             || existingActor.PhotoUrl.Equals("https://image.tmdb.org/t/p/w500", StringComparison.OrdinalIgnoreCase))
+                    {
+                        existingActor.PhotoUrl = string.Empty;
+                    }
+                }
+
                 actors.Add(existingActor);
             }
         }
@@ -109,16 +134,17 @@ public class TMDbSearchAndImport
         // Создаем новый фильм
         var movie = new Movie
         {
-            Title = tmdbMovieDetail.Title ?? tmdbMovieDetail.OriginalTitle ?? "",
-            OriginalTitle = tmdbMovieDetail.OriginalTitle ?? "",
-            Director = tmdbMovieDetail.Credits?.Crew?.FirstOrDefault(c => c.Job == "Director")?.Name ?? "",
+            Title = tmdbMovieDetail.Title ?? tmdbMovieDetail.OriginalTitle ?? string.Empty,
+            OriginalTitle = tmdbMovieDetail.OriginalTitle ?? string.Empty,
+            Director = tmdbMovieDetail.Credits?.Crew?.FirstOrDefault(c => c.Job == "Director")?.Name ?? string.Empty,
             ReleaseYear = (tmdbMovieDetail.ReleaseDate != null && int.TryParse(tmdbMovieDetail.ReleaseDate.Split('-')[0], out var year)) ? year : 0,
-            Description = tmdbMovieDetail.Overview ?? "",
-            PosterUrl = "https://image.tmdb.org/t/p/w500" + tmdbMovieDetail.PosterPath ?? string.Empty,
+            Description = tmdbMovieDetail.Overview ?? string.Empty,
+            PosterUrl = BuildImageUrl(tmdbMovieDetail.PosterPath),
             RuntimeMinutes = tmdbMovieDetail.Runtime,
             TMDbId = tmdbMovieId, // Присваиваем TMDbId
             UserId = currentUserId // Присваиваем ID текущего пользователя
         };
+
 
         // Добавляем связи Many-to-Many
         foreach (var genre in genres)
@@ -136,4 +162,8 @@ public class TMDbSearchAndImport
 
         return Results.CreatedAtRoute("GetMovieById", new { id = movie.Id }, new MovieIdResponse(movie.Id));
     }
+
+    private static string BuildImageUrl(string? path) => string.IsNullOrWhiteSpace(path)
+        ? string.Empty
+        : $"https://image.tmdb.org/t/p/w500{path}";
 }

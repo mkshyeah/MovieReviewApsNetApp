@@ -23,9 +23,11 @@ public static class CreateMovie
     
     public sealed class EndPoint : IEndPoint
     {
-        public void MapEndPoint(IEndpointRouteBuilder app)
+        public void MapEndPoints(IEndpointRouteBuilder app) // Changed from MapEndPoint to MapEndPoints
         {
-            app.MapPost("/movies", Handler).WithTags("Movies");
+            app.MapPost("/movies", Handler)
+                .WithTags("Movies")
+                .RequireAuthorization();
         }
     }
 

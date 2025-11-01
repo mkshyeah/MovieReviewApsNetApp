@@ -10,7 +10,7 @@ public class GetReviewById
 {
     public sealed class EndPoint : IEndPoint
     {
-        public void MapEndPoint(IEndpointRouteBuilder app)
+        public void MapEndPoints(IEndpointRouteBuilder app)
         {
             app.MapGet("/reviews/{id}", Handler)
                .WithTags("Reviews")

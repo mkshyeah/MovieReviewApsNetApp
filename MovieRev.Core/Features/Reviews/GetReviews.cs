@@ -9,7 +9,7 @@ public class GetReviews
 {
     public sealed class EndPoint: IEndPoint
     {
-        public void MapEndPoint(IEndpointRouteBuilder app)
+        public void MapEndPoints(IEndpointRouteBuilder app)
         {
             app.MapGet("/reviews/", Handler).WithTags("Reviews");
         }

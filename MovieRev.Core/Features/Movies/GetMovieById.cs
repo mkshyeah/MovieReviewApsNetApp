@@ -9,7 +9,7 @@ public class GetMovieById
 {
     public sealed class EndPoint: IEndPoint
     {
-        public void MapEndPoint(IEndpointRouteBuilder app)
+        public void MapEndPoints(IEndpointRouteBuilder app)
         {
             app.MapGet("/movies/{id}", Handler).WithTags("Movies").WithName("GetMovieById");
         }
