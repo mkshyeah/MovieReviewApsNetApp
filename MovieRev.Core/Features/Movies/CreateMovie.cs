@@ -4,10 +4,10 @@ using System; // Добавлен для DateTime
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MovieRev.Core.Data;
-using MovieRev.Core.EndPoints;
 using MovieRev.Core.Features.Movies.Requests;
 using MovieRev.Core.Features.Movies.Responses;
 using System.Security.Claims; // Добавляем для ClaimsPrincipal
+using MovieRev.Core.Extensions;
 
 namespace MovieRev.Core.Features.Movies;
 

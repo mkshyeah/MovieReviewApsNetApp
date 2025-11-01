@@ -1,0 +1,77 @@
+name: .NET Build, Test, Publish, and Deploy
+
+on:
+  push:
+    branches:
+      - main # Рабочий процесс будет запускаться при push'е в ветку main
+  pull_request:
+    branches:
+      - main # Также запускается при pull request'ах в main
+
+env:
+  DOTNET_VERSION: '8.0.x'
+  PROJECT_FOLDER: 'MovieRev.Core' # Папка, содержащая ваш .csproj файл
+  PROJECT_NAME: 'MovieRev.Core.csproj' # Имя вашего .csproj файла
+  BUILD_CONFIGURATION: 'Release'
+  OUTPUT_DIR: './publish' # Папка для опубликованного приложения
+  # Если используете Azure App Service, раскомментируйте и настройте:
+  # AZURE_APP_SERVICE_NAME: 'your-app-service-name' 
+  # AZURE_WEBAPP_PUBLISH_PROFILE_SECRET: 'AZURE_WEBAPP_PUBLISH_PROFILE' # Имя секрета для publish profile
+
+jobs:
+  build-test-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Restore dependencies
+      run: dotnet restore ${{ env.PROJECT_FOLDER }}/${{ env.PROJECT_NAME }}
+
+    - name: Build project
+      run: dotnet build ${{ env.PROJECT_FOLDER }}/${{ env.PROJECT_NAME }} --configuration ${{ env.BUILD_CONFIGURATION }} --no-restore
+
+    - name: Run tests # Запускаем тесты
+      run: dotnet test ${{ env.PROJECT_FOLDER }}/${{ env.PROJECT_NAME }} --no-build --configuration ${{ env.BUILD_CONFIGURATION }}
+      # Если тесты зависят от API-ключа, передайте его здесь
+      # env:
+      #   TMDbSettings__ApiKey: ${{ secrets.TMDB_API_KEY }}
+
+    - name: Publish project # Публикация проекта
+      run: dotnet publish ${{ env.PROJECT_FOLDER }}/${{ env.PROJECT_NAME }} --configuration ${{ env.BUILD_CONFIGURATION }} --no-build --output ${{ env.OUTPUT_DIR }}
+
+    - name: Update appsettings.json with TMDb API Key # Заменяем заглушку API-ключа
+      run: |
+        # Проверяем наличие файла appsettings.json в папке публикации
+        if [ -f "${{ env.OUTPUT_DIR }}/appsettings.json" ]; then
+          sed -i 's|"YOUR_TMDB_API_KEY"|"${{ secrets.TMDB_API_KEY }}"|g' "${{ env.OUTPUT_DIR }}/appsettings.json"
+        fi
+        # Если у вас есть appsettings.Production.json, то меняйте его:
+        # if [ -f "${{ env.OUTPUT_DIR }}/appsettings.Production.json" ]; then
+        #   sed -i 's|"YOUR_TMDB_API_KEY"|"${{ secrets.TMDB_API_KEY }}"|g' "${{ env.OUTPUT_DIR }}/appsettings.Production.json"
+        # fi
+      env:
+        # Делаем секрет доступным только для этого шага
+        TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }} 
+
+    - name: Upload artifact # Опционально: сохраняем опубликованные файлы как артефакт
+      uses: actions/upload-artifact@v4
+      with:
+        name: published-app
+        path: ${{ env.OUTPUT_DIR }}
+
+    # --- Пример развертывания в Azure App Service ---
+    # - name: Deploy to Azure Web App
+    #   if: success() # Запускать только при успешной сборке и публикации
+    #   uses: azure/webapps-deploy@v2
+    #   with:
+    #     app-name: ${{ env.AZURE_APP_SERVICE_NAME }}
+    #     publish-profile: ${{ secrets[env.AZURE_WEBAPP_PUBLISH_PROFILE_SECRET] }}
+    #     package: ${{ env.OUTPUT_DIR }} 
+        

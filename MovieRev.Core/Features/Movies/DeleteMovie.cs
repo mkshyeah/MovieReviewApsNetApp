@@ -1,5 +1,5 @@
 ﻿using MovieRev.Core.Data;
-using MovieRev.Core.EndPoints;
+using MovieRev.Core.Extensions;
 
 namespace MovieRev.Core.Features.Movies;
 

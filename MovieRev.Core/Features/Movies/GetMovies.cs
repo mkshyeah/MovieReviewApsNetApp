@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovieRev.Core.Data;
-using MovieRev.Core.EndPoints;
+using MovieRev.Core.Extensions;
 using MovieRev.Core.Features.Movies.Responses;
 
 namespace MovieRev.Core.Features.Movies;
@@ -15,7 +15,9 @@ public class GetMovies
         }
     }
 
-    public async static Task<IResult> Handler(AppDbContext db, CancellationToken cancellationToken)
+    public async static Task<IResult> Handler(
+        AppDbContext db,
+         CancellationToken cancellationToken)
     {
         var moviesResponse = await db.Movies.AsNoTracking()
             .Select(m => new MovieSummaryResponse(

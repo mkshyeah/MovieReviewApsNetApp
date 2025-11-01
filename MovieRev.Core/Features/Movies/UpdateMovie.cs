@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using MovieRev.Core.Features.Movies.Requests;
 using MovieRev.Core.Data;
-using MovieRev.Core.EndPoints;
+using MovieRev.Core.Extensions;
 using MovieRev.Core.Features.Movies.Responses;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;

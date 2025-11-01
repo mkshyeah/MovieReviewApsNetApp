@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovieRev.Core.Data;
-using MovieRev.Core.EndPoints;
+using MovieRev.Core.Extensions;
 using MovieRev.Core.Features.Movies.Responses;
 
 namespace MovieRev.Core.Features.Movies;
@@ -34,6 +34,7 @@ public class GetMovieById
                 m.Director, 
                 m.Description, 
                 m.RuntimeMinutes,
+                m.TMDbId, // Добавляем TMDbId в проекцию
                 m.AverageRating,
                 m.ReviewCount,
                 

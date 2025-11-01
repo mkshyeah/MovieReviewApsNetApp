@@ -10,6 +10,7 @@ public record MovieDetailedResponse(
     string Director, 
     string Description, 
     int RuntimeMinutes,
+    int? TMDbId, // Добавляем TMDbId в ответ
     decimal AverageRating,
     int ReviewCount,
     

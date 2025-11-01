@@ -12,6 +12,8 @@ public class Movie
     public string PosterUrl { get; set; } = string.Empty;
     public required int RuntimeMinutes { get; set; }
 
+    public int? TMDbId { get; set; } // Добавляем поле для ID фильма на TMDb
+
     //Установлено 0 для нового фильма
     public decimal AverageRating { get; set; } = 0.0m;
     public int ReviewCount { get; set; } = 0;

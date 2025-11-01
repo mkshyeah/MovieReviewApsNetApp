@@ -1,5 +1,5 @@
 ﻿using MovieRev.Core.Data;
-using MovieRev.Core.EndPoints;
+using MovieRev.Core.Extensions;
 using System.Security.Claims; // Добавляем для ClaimsPrincipal
 
 namespace MovieRev.Core.Features.Reviews.Responses;

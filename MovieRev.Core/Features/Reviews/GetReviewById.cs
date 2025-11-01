@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MovieRev.Core.Data;
-using MovieRev.Core.EndPoints;
+using MovieRev.Core.Extensions;
 using MovieRev.Core.Features.Reviews.Responses;
 using System.Linq;
 

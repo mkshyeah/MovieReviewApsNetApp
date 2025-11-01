@@ -7,6 +7,9 @@ public class MovieConfiguration : IEntityTypeConfiguration<Movie>
 {
     public void Configure(EntityTypeBuilder<Movie> builder)
     {
+        // Конфигурация для TMDbId
+        builder.Property(m => m.TMDbId).IsRequired(false); // TMDbId не обязателен, может быть null
+
         // Movie -> MovieActors (Актеры)
         builder.HasMany(m => m.MovieActors)
             .WithOne(ma => ma.Movie)

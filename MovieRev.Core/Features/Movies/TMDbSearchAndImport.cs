@@ -1,5 +1,5 @@
 using MovieRev.Core.Data;
-using MovieRev.Core.EndPoints;
+using MovieRev.Core.Extensions;
 using MovieRev.Core.Features.Movies.Responses;
 using MovieRev.Core.Models.TMDb;
 using MovieRev.Core.Services;
@@ -58,12 +58,12 @@ public class TMDbSearchAndImport
 
         // Проверяем, не импортирован ли фильм уже
         var existingMovie = await context.Movies.FirstOrDefaultAsync(
-            m => m.OriginalTitle == tmdbMovieId.ToString(), // TODO: Нужно более надежное сравнение, возможно, через новое поле TMDbId
+            m => m.TMDbId == tmdbMovieId, 
             cancellationToken);
 
         if (existingMovie is not null)
         {
-            return Results.Conflict("Этот фильм уже импортирован.");
+            return Results.Conflict("Этот фильм уже импортирован (TMDbId: " + existingMovie.TMDbId + ").");
         }
 
         var tmdbMovieDetail = await tmdbService.GetMovieDetails(tmdbMovieId, cancellationToken);
@@ -116,6 +116,7 @@ public class TMDbSearchAndImport
             Description = tmdbMovieDetail.Overview ?? "",
             PosterUrl = "https://image.tmdb.org/t/p/w500" + tmdbMovieDetail.PosterPath ?? string.Empty,
             RuntimeMinutes = tmdbMovieDetail.Runtime,
+            TMDbId = tmdbMovieId, // Присваиваем TMDbId
             UserId = currentUserId // Присваиваем ID текущего пользователя
         };
 
