@@ -27,7 +27,7 @@ public static class CreateMovie
         {
             app.MapPost("/movies", Handler)
                 .WithTags("Movies")
-                .RequireAuthorization();
+                .RequireAuthorization("AdminOnly");
         }
     }
 

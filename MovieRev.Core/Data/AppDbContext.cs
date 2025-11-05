@@ -22,6 +22,7 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options)
     //  DbSet'ы для связующих таблиц
     public DbSet<MovieActor> MovieActors { get; set; }
     public DbSet<MovieGenre> MovieGenres { get; set; }
+    public DbSet<MovieProposal> MovieProposals { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using MovieRev.Core.Data;
 using MovieRev.Core.Extensions;
+using MovieRev.Core.Models;
 
 // Добавляем для ClaimsPrincipal
 
@@ -31,14 +32,17 @@ public class DeleteReview
         if (deleteReview is null) return Results.NotFound();
 
         var currentUserId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value; // Получаем ID текущего пользователя
-        if (currentUserId is null || deleteReview.UserId != currentUserId)
+        var isOwner = deleteReview.UserId == currentUserId;
+        var isModeratorOrAdmin = user.IsInRole(Roles.Moderator) || user.IsInRole(Roles.Administrator);
+        
+        if (!isOwner && !isModeratorOrAdmin)
         {
-            return Results.Forbid(); // Отказ в доступе, если пользователь не является автором
+            return Results.Forbid(); 
         }
 
         context.Remove(deleteReview);
         
         await context.SaveChangesAsync(cancellationToken);
-        return Results.NoContent(); // Изменяем на Results.NoContent()
+        return Results.NoContent();
     } 
 }

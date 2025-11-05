@@ -59,6 +59,9 @@ public sealed class AuthEndPoints : IEndPoint
             return Results.BadRequest(result.Errors.Select(e => e.Description));
         }
         
+        // Назначения роли
+        await userManager.AddToRoleAsync(user, Roles.User);
+        
         // 3. Генерация JWT-токена
         var token = await tokenService.GenerateToken(user);
         var expiration = DateTimeOffset.UtcNow.AddDays(7); // Срок действия токена, как в JwtSettings

@@ -21,7 +21,7 @@ public class TMDbSearchAndImport
             app.MapPost("/movies/tmdb/import/{tmdbMovieId}", ImportMovie)
                 .WithTags("Movies")
                 .WithName("TMDbImportMovie")
-                .RequireAuthorization();
+                .RequireAuthorization("AdminOnly");
         }
     }
 

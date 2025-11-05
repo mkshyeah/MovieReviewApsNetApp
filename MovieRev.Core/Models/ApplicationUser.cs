@@ -15,4 +15,5 @@ public sealed class ApplicationUser : IdentityUser
     public ICollection<Review> Reviews { get; set; } = new List<Review>();
     public ICollection<Comment> Comments { get; set; } = new List<Comment>();
     public ICollection<ReviewLike> ReviewLikes { get; set; } = new List<ReviewLike>();
+    public ICollection<MovieProposal> MovieProposals { get; set; } = new List<MovieProposal>();
 }

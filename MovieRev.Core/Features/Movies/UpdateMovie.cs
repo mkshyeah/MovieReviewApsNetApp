@@ -23,7 +23,7 @@ public class UpdateMovie
         {
             app.MapPut("/movies/{id}", Handler)
                 .WithTags("Movies")
-                .RequireAuthorization();;
+                .RequireAuthorization("AdminOnly");;
         }
     }
 

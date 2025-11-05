@@ -13,6 +13,8 @@ using MovieRev.Core.Models;
 using MovieRev.Core.Services;
 using MovieRev.Core.Services.Auth;
 using MovieRev.Core.Settings;
+using MovieRev.Core.Features.Admin;
+using MovieRev.Core.Features.Profile;
 
 namespace MovieRev.Core.Extensions;
 
@@ -76,6 +78,20 @@ public static class ServiceExtensions
         
         return services;
     }
+
+    public static IServiceCollection AddAuthorizationPolicies(this IServiceCollection services)
+    {
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy("AdminOnly", policy =>
+                policy.RequireRole(Roles.Administrator));
+            
+            options.AddPolicy("ModeratorOrAdmin", policy =>
+                policy.RequireRole(Roles.Administrator, Roles.Moderator));
+        });
+        
+        return services;
+    }
     
     public static IServiceCollection AddTMDbIntegration(this IServiceCollection services, IConfiguration configuration)
     {
@@ -107,12 +123,19 @@ public static class ServiceExtensions
         // Добавляем сервисы Аутентификации и Авторизации.
         services.AddJwtAuthentication(configuration);
         
+        // Добавляем роли в сервисы Авторизации.
+        services.AddAuthorizationPolicies(); 
+        
         // Метод для настройки TMDb интеграции
         services.AddTMDbIntegration(configuration);
         
         // Метод для настройки FluentValidation
         services.AddFluentValidationServices();
         
+        services.AddScoped<RejectMovieProposal.EndPoint>();
+        services.AddScoped<AssignRoleEndPoint>();
+        services.AddScoped<GetMyProfile>();
+
         return services;
     }
 

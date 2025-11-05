@@ -12,7 +12,7 @@ public class DeleteMovie
         {
             app.MapDelete("/movies/{id}", Handler)
                 .WithTags("Movies")
-                .RequireAuthorization();
+                .RequireAuthorization("AdminOnly");
         }
     }
 
